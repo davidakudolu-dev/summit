@@ -17,18 +17,22 @@ secrets=[value.encode() for name,value in os.environ.items() if name in ['GH_TOK
 for p in files:
  data=p.read_bytes()
  if any(secret in data for secret in secrets):raise RuntimeError('A private credential was found; packaging blocked')
-archives=[(output/'1751_Cloudflare_Pages_Full.zip',[(p,'1751-cloudflare-pages/'+str(p.relative_to(root))) for p in files]),(output/'1751_Cloudflare_Static_Preview.zip',[(p,str(p.relative_to(root/'static-preview'))) for p in (root/'static-preview').rglob('*') if p.is_file()])]
-for archive,entries in archives:
+archives=[('full',output/'1751_WRANGLER_FULL_SOURCE_DO_NOT_UPLOAD_TO_DASHBOARD.zip',[(p,'1751-cloudflare-pages/'+str(p.relative_to(root))) for p in files]),('static',output/'1751_DASHBOARD_UPLOAD_STATIC_ONLY.zip',[(p,str(p.relative_to(root/'static-preview'))) for p in (root/'static-preview').rglob('*') if p.is_file()])]
+for mode,archive,entries in archives:
  with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
   for p,name in sorted(entries,key=lambda pair:pair[1]):z.write(p,name)
  with zipfile.ZipFile(archive) as z:
   if z.testzip() is not None:raise RuntimeError('Archive integrity failed')
   names=z.namelist()
-  if archive.name.endswith('Pages_Full.zip'):
+  if mode=='full':
    for name in ['functions/api/[[path]].js','functions/[[path]].js','dist/_routes.json','backend/api.js','wrangler.toml']:
     if '1751-cloudflare-pages/'+name not in names:raise RuntimeError('Missing full deployment component: '+name)
    if '1751-cloudflare-pages/dist/_worker.js' in names:raise RuntimeError('Mixed Pages deployment modes')
-  elif any(name in names for name in ['_routes.json','_worker.js']) or 'index.html' not in names:raise RuntimeError('Invalid static preview structure')
+  else:
+   forbidden=['wrangler.toml','wrangler.json','wrangler.jsonc','package.json','package-lock.json','_routes.json','_worker.js','.env','.dev.vars']
+   if any(Path(name).name in forbidden or any(part.startswith('.') for part in Path(name).parts) or name.startswith(('functions/','backend/','supabase/','scripts/','node_modules/')) for name in names) or 'index.html' not in names:raise RuntimeError('Configuration or server files in static preview')
+   for p,name in entries:
+    if any(secret in p.read_bytes() for secret in secrets):raise RuntimeError('A private credential was found in preview assets')
  checksum=hashlib.sha256(archive.read_bytes()).hexdigest()
  archive.with_suffix('.sha256').write_text(checksum+'  '+archive.name+'\n')
  print(json.dumps({'archive':str(archive),'files':len(entries),'bytes':archive.stat().st_size,'sha256':checksum,'deployed':False}))

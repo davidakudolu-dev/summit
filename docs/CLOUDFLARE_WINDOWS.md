@@ -5,13 +5,25 @@ The project root contains functions/, backend/, wrangler.toml and package.json. 
 folder is dist/. Keep dist/_routes.json. Do not put a compiled _worker.js into dist/ for this mode.
 Do not upload the full source ZIP through the dashboard's Workers Static Assets importer.
 
+## Dashboard preview: the shortest Windows path
+
+1. Download **1751_DASHBOARD_UPLOAD_STATIC_ONLY.zip** from this repository's download link.
+2. Cloudflare → Workers & Pages → Pages → Direct Upload: choose a separate preview project.
+3. Select that ZIP itself and upload it. Do not select the full-source ZIP, the GitHub repository
+   archive or the entire extracted project folder. The correct upload has 32 files, not 140.
+4. Deploy and open the URL Cloudflare reports. Verify the visible "Static preview only" label.
+   Navigation/layout/carousel can be reviewed; account/admin/payment/data/email actions are disabled.
+
+No Node/npm, configuration keys or wrangler.toml upload is needed for this static preview.
+The remainder of this guide is for the separate complete Wrangler application.
+
 ## 1. Download and extract the full package
 
-Download **1751_Cloudflare_Pages_Full.zip** from this repository branch and save it in Downloads.
+Download **1751_WRANGLER_FULL_SOURCE_DO_NOT_UPLOAD_TO_DASHBOARD.zip** from this repository branch and save it in Downloads.
 Install Node.js 24 LTS from nodejs.org; close/reopen PowerShell after installation.
 
 ```powershell
-$zip = Join-Path $env:USERPROFILE 'Downloads\1751_Cloudflare_Pages_Full.zip'
+$zip = Join-Path $env:USERPROFILE 'Downloads\1751_WRANGLER_FULL_SOURCE_DO_NOT_UPLOAD_TO_DASHBOARD.zip'
 $folder = Join-Path $env:USERPROFILE 'Downloads\1751-pages-fixed'
 Expand-Archive -LiteralPath $zip -DestinationPath $folder
 Set-Location (Join-Path $folder '1751-cloudflare-pages')
@@ -114,7 +126,7 @@ Pages Function logs without printing secret values. Queued email is not proof of
 
 ## Optional dashboard-only static preview
 
-Use **1751_Cloudflare_Static_Preview.zip** with a separate dashboard Direct Upload project. ZIP root
+Use **1751_DASHBOARD_UPLOAD_STATIC_ONLY.zip** with a separate dashboard Direct Upload project. ZIP root
 contains index.html, artwork, fonts, scripts/styles, _headers, _redirects and a visible preview label.
 It deliberately has no functions/, _worker.js or _routes.json. It is a separate visual artifact;
 all original source/backend files remain in the full package.

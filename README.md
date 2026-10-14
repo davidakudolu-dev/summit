@@ -1,8 +1,21 @@
 # 1751 — Stage 3 release
 
-**Corrected Cloudflare artifacts:** [Full Pages source package](https://github.com/davidakudolu-dev/summit/raw/refs/heads/cloudflare-sandbox-package/1751_Cloudflare_Pages_Full.zip)
-for Wrangler deployment, or [static-only dashboard preview](https://github.com/davidakudolu-dev/summit/raw/refs/heads/cloudflare-sandbox-package/1751_Cloudflare_Static_Preview.zip).
-The previous 1751_Cloudflare_Sandbox.zip is superseded. Use the deployment method documented below.
+## Which download to use
+
+**Uploading in the Cloudflare dashboard? Use only
+[1751_DASHBOARD_UPLOAD_STATIC_ONLY.zip](https://github.com/davidakudolu-dev/summit/raw/refs/heads/cloudflare-sandbox-package/1751_DASHBOARD_UPLOAD_STATIC_ONLY.zip).**
+Upload this ZIP as-is to a separate Pages Direct Upload preview project. It has index.html at ZIP
+root and only public HTML/CSS/JS/images/fonts plus supported _headers/_redirects/robots files.
+It has no wrangler.toml, _routes.json, _worker.js, functions, server source or secret/config files.
+This is a visual preview: authentication, admin operations, payments, saved data and email do not run.
+Do not upload it over a working full application.
+
+**Need the full interactive application? Download
+[1751_WRANGLER_FULL_SOURCE_DO_NOT_UPLOAD_TO_DASHBOARD.zip](https://github.com/davidakudolu-dev/summit/raw/refs/heads/cloudflare-sandbox-package/1751_WRANGLER_FULL_SOURCE_DO_NOT_UPLOAD_TO_DASHBOARD.zip).**
+Extract it locally and follow [Windows CLI steps](docs/CLOUDFLARE_WINDOWS.md). Never drag this archive
+or its root folder into the dashboard asset uploader. Its wrangler.toml, functions and configuration
+are intentionally outside dist/. Wrangler uploads dist/ assets and compiles functions/ separately.
+The earlier 140-file full-source ZIP is superseded by this explicitly named package.
 
 The Stage 1 design and Stage 2 transactional platform now include protected administration,
 MFA and role permissions, content/catalog/event/support management, audit history, secure uploads,
@@ -14,7 +27,7 @@ and legal/retention decisions. No public deployment or live payment activation o
 
 ## Cloudflare deployment fix
 
-Use the **1751_Cloudflare_Pages_Full.zip** source package with **Wrangler Pages**, from a project
+Use the **1751_WRANGLER_FULL_SOURCE_DO_NOT_UPLOAD_TO_DASHBOARD.zip** source package with **Wrangler Pages**, from a project
 root containing functions/, backend/, package.json and wrangler.toml. Keep dist/_routes.json.
 This is source-functions mode; do not put a compiled _worker.js in dist/ or run `wrangler deploy`.
 The `Pages _routes.json is not supported` error comes from sending Pages artifacts to a Workers
@@ -38,7 +51,7 @@ interactive features. Use the existing Pages project from project list; see the 
 if you currently have only a Workers project. Pages does not support a custom --config location.
 No Python, Bash or PowerShell execution-policy change is needed for these deployment commands.
 
-**1751_Cloudflare_Static_Preview.zip** is the separate dashboard-only visual preview. Its ZIP root
+**1751_DASHBOARD_UPLOAD_STATIC_ONLY.zip** is the separate dashboard-only visual preview. Its ZIP root
 contains index.html; it has no functions, _worker.js or _routes.json. Account/admin data, payments,
 private files, live content/registration/community/forms/email/jobs are unavailable in that preview.
 It does not replace the full application. Do not upload either the full source ZIP or your whole
