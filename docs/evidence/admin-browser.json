@@ -1,0 +1,48 @@
+{
+  "scope": "Local Chromium, real PostgreSQL/PGlite, explicit provider test doubles; not hosted/provider acceptance",
+  "results": [
+    {
+      "name": "staff login requires TOTP enrollment/verification before showing database-derived overview",
+      "status": "passed"
+    },
+    {
+      "name": "admin creates/edits draft products with NGN price conversion and historical-safe archive",
+      "status": "passed"
+    },
+    {
+      "name": "editor creates/previews/publishes/archives approved stories without editing source",
+      "status": "passed"
+    },
+    {
+      "name": "service inquiry status and notes can be managed securely through the dashboard",
+      "status": "passed"
+    },
+    {
+      "name": "website content overrides preserve design and are returned by the public settings API",
+      "status": "passed"
+    },
+    {
+      "name": "admin layout and native dialogs remain usable at phone, tablet and desktop widths",
+      "status": "passed"
+    },
+    {
+      "name": "WCAG automated checks on authenticated admin and public home have no serious/critical violations",
+      "status": "passed"
+    },
+    {
+      "name": "no uncaught browser exceptions and preserved design screenshot",
+      "status": "passed"
+    }
+  ],
+  "errors": [],
+  "accessibility": [
+    {
+      "page": "admin overview",
+      "violations": []
+    },
+    {
+      "page": "public home",
+      "violations": []
+    }
+  ]
+}

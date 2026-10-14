@@ -1,0 +1,4 @@
+/* Targeted WCAG fixes retain the original palette and visual dot shapes. */
+.eco-intro .lead{color:#3d5948}.hero-dot{width:24px;height:24px;background:transparent;position:relative;border-radius:50%}.hero-dot::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:9px;height:9px;border-radius:99px;background:#ffffffb3}.hero-dot.active{width:24px;background:transparent}.hero-dot.active::after{width:22px;background:var(--lime)}.hero-pause{width:24px;min-height:24px;display:grid;place-items:center}.footer-actions a{margin-right:12px}.story-grid a{overflow-wrap:anywhere}.brandlogo img{object-fit:contain}
+
+.footergrid .footer-heading{font-size:12px;text-transform:uppercase;letter-spacing:1px;margin:0 0 16px}

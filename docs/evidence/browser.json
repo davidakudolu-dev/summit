@@ -1,0 +1,58 @@
+{
+  "environment": "Chromium + real PostgreSQL/PGlite + explicit test doubles for Auth, Paystack, email, Storage",
+  "results": [
+    {
+      "name": "original navigation, published catalog and product detail dialog",
+      "status": "passed"
+    },
+    {
+      "name": "guest cart refresh, authoritative checkout and private paid downloads",
+      "status": "passed"
+    },
+    {
+      "name": "deep article URL survives refresh and stored content cannot execute HTML",
+      "status": "passed"
+    },
+    {
+      "name": "account login, persistent session after reload, profile and password recovery UI",
+      "status": "passed"
+    },
+    {
+      "name": "five-day schedule, calendar and confirmed registration dashboard",
+      "status": "passed"
+    },
+    {
+      "name": "community membership, post, comment, author edit and report",
+      "status": "passed"
+    },
+    {
+      "name": "inquiry accepted by backend with unique reference and notification queued",
+      "status": "passed"
+    },
+    {
+      "name": "newsletter consent, double opt-in and unsubscribe UI persist in database",
+      "status": "passed"
+    },
+    {
+      "name": "global search uses public backend results",
+      "status": "passed"
+    },
+    {
+      "name": "responsive layout on all original pages plus account at 375, 768 and 1440 pixels",
+      "status": "passed"
+    },
+    {
+      "name": "logout clears session; backend outage gives error without false success",
+      "status": "passed"
+    },
+    {
+      "name": "signup verification and recovery links complete through the browser account forms",
+      "status": "passed"
+    },
+    {
+      "name": "no uncaught browser JavaScript exceptions",
+      "status": "passed"
+    }
+  ],
+  "errors": []
+}

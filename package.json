@@ -1,0 +1,34 @@
+{
+  "name": "1751-platform",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=.dev.vars scripts/dev.mjs",
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "check": "node --check backend/api.js && node --check backend/admin.js && node --check backend/uploads.js && node --check backend/render.js && node --check admin/admin.js && node --check stage3.js && npm test && npm run build",
+    "test:admin": "node tests/admin-browser.mjs",
+    "test:performance": "node tests/performance.mjs",
+    "test:concurrency": "node tests/concurrency.mjs",
+    "test:recovery": "node tests/recovery.mjs",
+    "build:functions": "node scripts/wrangler.mjs pages functions build functions --outdir .local/functions",
+    "pages:dev": "node scripts/wrangler.mjs pages dev dist",
+    "pages:deploy": "node scripts/wrangler.mjs pages deploy dist",
+    "build:static": "node scripts/build-static.mjs",
+    "validate:deployment": "node scripts/validate-deployment.mjs",
+    "test:cloudflare": "node tests/cloudflare-runtime.mjs",
+    "test:static": "node tests/static-preview.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@electric-sql/pglite": "0.3.14",
+    "lighthouse": "13.5.0",
+    "playwright-core": "1.56.1",
+    "wrangler": "4.150.0"
+  }
+}

@@ -1,0 +1,5 @@
+name = "1751-platform"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-10-13"
+# Cloudflare Pages source-functions mode: deploy with `wrangler pages deploy dist`.
+# Do not use `wrangler deploy` / Workers Static Assets for this Pages build output.

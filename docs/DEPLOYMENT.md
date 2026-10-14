@@ -4,6 +4,9 @@ This release prepares Cloudflare Pages + Pages Functions, Supabase Auth/PostgreS
 Paystack test checkout and Resend transactional mail. No hosted staging/production deployment,
 DNS change, real campaign or live transaction has been performed or authorized.
 
+For this deployment use the corrected **Pages source-functions** workflow in [Windows steps](CLOUDFLARE_WINDOWS.md).
+The old mixed Workers-assets ZIP workflow is superseded; the full source remains preserved.
+
 ## Configure an isolated preview first
 
 1. Use separate staging and production projects, buckets, mail destinations and credentials.
@@ -50,11 +53,16 @@ requirements; do not grant a wildcard for all projects or print secret values to
 ## Build and deploy only after approval
 
 Run `npm ci --ignore-scripts --no-audit --no-fund`, `npm run check`, browser/admin checks and
-`npm run build:functions`. Cloudflare source builds use `wrangler.toml`, `dist/` and `functions/`,
-whose imports include server-only backend/scripts. The release's `deploy/` directory contains
-allowlisted static assets and a compiled `_worker.js` for advanced-mode upload. Do not deploy
-both the compiled advanced worker and source Functions into the same output. Do not upload the
-repository root as static content. Inspect generated routes/headers before release.
+`npm run build:functions`. The supported full deployment is root `wrangler.toml`, source `functions/`
+and static `dist/` with `_routes.json`. Run `npm run pages:deploy -- --project-name <Pages project>
+--branch sandbox` from the project root. Keep `_worker.js` out of dist in this source-functions mode;
+it would override source functions. Pages uses root configuration automatically and does not accept
+a custom --config file location. Do not use Workers `wrangler deploy` on this Pages directory.
+Do not upload the full source ZIP or repository root as static content. The separate clearly labelled
+static-preview ZIP is for dashboard visual review only, with backend actions disabled.
+Configure variables/secrets on the Preview deployment first, using separate staging and production
+Supabase projects/credentials. Build needs no provider keys. See CLOUDFLARE_WINDOWS.md for exact
+extraction, install, login, project identification, secret configuration and deployment commands.
 
 Register `<APP_ORIGIN>/api/payments/webhook` in Paystack test mode and verify exact matching,
 forged signatures, replay, delayed callbacks, declined transactions and refunds. Configure the

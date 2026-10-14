@@ -1,0 +1,34 @@
+// Optional real PostgreSQL test. Uses an isolated Docker container with no published ports.
+import { spawn } from 'node:child_process';
+import { readFile } from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const name=process.env.TEST_PG_CONTAINER || '1751-postgres-tests';
+function sql(command){return new Promise((resolve,reject)=>{const p=spawn('docker',['exec','-i',name,'psql','-U','postgres','-v','ON_ERROR_STOP=1','-tA']);let out='',err='';p.stdout.on('data',d=>out+=d);p.stderr.on('data',d=>err+=d);p.on('error',reject);p.on('close',c=>c?reject(new Error(err)):resolve(out.trim()));p.stdin.end(command);});}
+const uid=i=>`10000000-0000-4000-8000-${String(i).padStart(12,'0')}`;
+await sql(`drop schema if exists public cascade;create schema public;drop schema if exists auth cascade;create schema auth;create table auth.users(id uuid primary key,email text,created_at timestamptz default now());create function auth.uid() returns uuid language sql as 'select null::uuid';do $$declare r text;begin foreach r in array array['anon','authenticated','service_role'] loop if not exists(select 1 from pg_roles where rolname=r) then execute format('create role %I',r);end if;end loop;end$$;grant usage on schema public to anon,authenticated,service_role;`);
+await sql(await readFile(new URL('../supabase/migrations/202610130001_platform.sql',import.meta.url),'utf8'));
+await sql(await readFile(new URL('../supabase/migrations/202610130002_admin.sql',import.meta.url),'utf8'));
+await sql(`insert into auth.users(id,email) values ${Array.from({length:12},(_,i)=>`('${uid(i+1)}','u${i+1}@example.test')`).join(',')};
+insert into products(id,title,price_minor,status) values('${uid(100)}','CONCURRENCY TEST ONLY',200000,'published');
+insert into product_assets(product_id,storage_path) values('${uid(100)}','test.pdf');
+insert into summits(id,title,starts_on,ends_on,published) values('${uid(200)}','CONCURRENCY TEST ONLY',current_date+1,current_date+1,true);
+insert into sessions(id,summit_id,title,starts_at,ends_at,capacity,registration_closes_at,registration_open,published,waitlist_enabled) values('${uid(201)}','${uid(200)}','CONCURRENCY TEST ONLY',now()+interval '1 day',now()+interval '2 days',1,now()+interval '1 day',true,true,true);`);
+const rpc=(action,p,actor=null)=>`select platform('${action}', '${JSON.stringify(p).replace(/'/g,"''")}'::jsonb,${actor?`'${actor}'::uuid`:'null'});`;
+await Promise.all(Array.from({length:12},(_,i)=>sql(rpc('register',{session_id:uid(201),name:'Concurrent Test',email:`u${i+1}@example.test`,access_hash:'test-hash'},uid(i+1)))));
+const capacity=JSON.parse(await sql(`select json_build_object('confirmed',count(*)filter(where status='confirmed'),'waitlisted',count(*)filter(where status='waitlisted')) from registrations;`));
+assert.deepEqual(capacity,{confirmed:1,waitlisted:11});console.log('PASS concurrent registration: 1 seat, 11 waitlisted, no overselling');
+const confirmedId=await sql(`select id from registrations where status='confirmed'`);
+const waitlistedId=await sql(`select id from registrations where status='waitlisted' limit 1`);
+const waitlistedActor=await sql(`select user_id from registrations where id='${waitlistedId}'`);
+await sql(rpc('registration_cancel',{id:waitlistedId},waitlistedActor));
+assert.equal(await sql(`select count(*) from registrations where status='confirmed'`),'1');console.log('PASS cancelling a waitlist entry does not allocate an extra seat');
+const p={key:uid(300),items:[{id:uid(100),quantity:1}],email:'guest@example.test',name:'Concurrent Test',access_hash:'test-hash',fingerprint:'test-fingerprint'};
+const orders=await Promise.all(Array.from({length:12},()=>sql(rpc('checkout',p))));
+assert.equal(new Set(orders.map(o=>JSON.parse(o).reference)).size,1);assert.equal(await sql('select count(*) from orders'),'1');console.log('PASS 12 simultaneous checkout retries produce exactly one order');
+const reference=JSON.parse(orders[0]).reference;
+await Promise.all(Array.from({length:12},()=>sql(rpc('finalize_payment',{reference,amount:200000,currency:'NGN',provider_id:'concurrent-provider',order_url:'https://example.test/#account'}))));
+assert.equal(await sql('select count(*) from payments'),'1');assert.equal(await sql('select count(*) from entitlements'),'1');assert.equal(await sql(`select count(*) from email_outbox where dedupe_key like 'order:%'`),'1');console.log('PASS concurrent payment callbacks fulfill and queue a receipt once');
+await Promise.all(Array.from({length:12},(_,i)=>sql(rpc('newsletter',{email:'concurrent@example.test',token_hash:'test-token-'+i,unsubscribe_hash:'test-unsub-'+i,confirm_url:'https://example.test/confirm',unsubscribe_url:'https://example.test/unsub'}))));
+assert.equal(await sql('select count(*) from newsletter_subscriptions'),'1');assert.equal(await sql(`select count(*) from email_outbox where template='newsletter'`),'1');console.log('PASS concurrent newsletter requests create one record and confirmation');
+const batches=await Promise.all(Array.from({length:4},()=>sql(`select platform('claim_emails');`)));
+const claimed=batches.flatMap(b=>JSON.parse(b));assert.equal(claimed.length,new Set(claimed.map(x=>x.id)).size);console.log('PASS parallel outbox workers claim disjoint batches');

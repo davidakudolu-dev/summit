@@ -1,0 +1,36 @@
+name: Encrypted 1751 backup
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 1 * * *'
+permissions:
+  contents: read
+jobs:
+  backup:
+    if: vars.BACKUPS_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    container: postgres@sha256:2d2b8998d31037bf721cfdf764d76ba74171b4fab3431b7f72c27c56ddbdf9e3
+    environment: backup
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+      - name: Write backup public encryption key
+        env:
+          BACKUP_PUBLIC_KEY: ${{ vars.BACKUP_PUBLIC_KEY }}
+        run: printf '%s' "$BACKUP_PUBLIC_KEY" > /tmp/1751-backup-public.pem
+      - run: node scripts/backup.mjs
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          APP_ORIGIN: ${{ vars.APP_ORIGIN }}
+          JOB_SECRET: ${{ secrets.JOB_SECRET }}
+          BACKUP_S3_ENDPOINT: ${{ vars.BACKUP_S3_ENDPOINT }}
+          BACKUP_BUCKET: ${{ vars.BACKUP_BUCKET }}
+          BACKUP_REGION: ${{ vars.BACKUP_REGION }}
+          BACKUP_ACCESS_KEY_ID: ${{ secrets.BACKUP_ACCESS_KEY_ID }}
+          BACKUP_SECRET_ACCESS_KEY: ${{ secrets.BACKUP_SECRET_ACCESS_KEY }}
+          BACKUP_RETENTION_DAYS: ${{ vars.BACKUP_RETENTION_DAYS }}
+          BACKUP_PUBLIC_KEY_FILE: /tmp/1751-backup-public.pem

@@ -1,0 +1,6 @@
+name = "1751-jobs"
+main = "worker.js"
+compatibility_date = "2026-10-13"
+[triggers]
+crons = ["*/5 * * * *"]
+# Set APP_ORIGIN and JOB_SECRET through encrypted settings.

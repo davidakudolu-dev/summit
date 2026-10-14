@@ -1,0 +1,29 @@
+name: Verify 1751
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run check
+      - run: npx playwright-core install --with-deps chromium
+      - run: npm run test:browser
+      - run: npm run test:admin
+      - run: npm run build:functions
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-evidence
+          path: test-results/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pages-static-assets
+          path: dist/
+      # No deployment or live payment activation is triggered by this workflow.

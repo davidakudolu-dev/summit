@@ -1,0 +1,5 @@
+name = "1751-sandbox"
+pages_build_output_dir = "../dist"
+compatibility_date = "2026-10-13"
+# This is a Pages configuration. Use `wrangler pages deploy` from the project root.
+# Source functions/ is preserved; dist/ contains Pages _routes.json and no _worker.js.

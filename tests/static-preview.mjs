@@ -1,0 +1,12 @@
+import http from 'node:http';import {readFile} from 'node:fs/promises';import {existsSync} from 'node:fs';import assert from 'node:assert/strict';import {chromium} from 'playwright-core';
+const types={html:'text/html',js:'text/javascript',css:'text/css',webp:'image/webp',woff2:'font/woff2',svg:'image/svg+xml'};
+const server=http.createServer(async(req,res)=>{let path=new URL(req.url,'http://preview.test').pathname;if(['/','/store','/summit','/community','/about','/account','/stories'].includes(path))path='/index.html';if(['/admin','/admin/'].includes(path))path='/admin/index.html';try{if(path.includes('..'))throw Error();const bytes=await readFile('static-preview'+path);res.setHeader('Content-Type',types[path.split('.').pop()]||'text/plain');res.end(bytes);}catch{res.statusCode=404;res.end('Not found');}});
+await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const origin='http://127.0.0.1:'+server.address().port;
+const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||(existsSync('/usr/bin/chromium')?'/usr/bin/chromium':chromium.executablePath()),headless:true,args:['--no-sandbox']});const page=await browser.newPage();let apiRequests=0;page.on('request',request=>{if(new URL(request.url()).pathname.startsWith('/api/'))apiRequests++;});
+try{
+ await page.goto(origin);await page.locator('#page-home.active').waitFor();assert.match(await page.locator('body').innerText(),/Static preview only/);
+ for(const width of [375,768,1440]){await page.setViewportSize({width,height:1000});for(const route of ['home','store','summit','community','about','account']){await page.evaluate(r=>navigate(r),route);await page.locator('#page-'+route+'.active').waitFor();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);}}
+ const disabled=await page.evaluate(async()=>{const response=await fetch('/api/checkout',{method:'POST',body:'{}'});return {status:response.status,data:await response.json()};});assert.equal(disabled.status,503);assert.equal(disabled.data.error,'static_preview_only');assert.equal(apiRequests,0);
+ await page.goto(origin+'/admin');assert.match(await page.locator('body').innerText(),/Static preview only/);assert.equal(apiRequests,0);
+ console.log('PASS static preview: preserved public navigation/layout at 375/768/1440, labelled admin shell, explicit 503 disabled actions and zero backend network requests.');
+}finally{await browser.close();await new Promise(resolve=>server.close(resolve));}
