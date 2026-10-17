@@ -1,0 +1,374 @@
+{
+  "results": [
+    {
+      "route": "home",
+      "width": 1440,
+      "height": 7814,
+      "geometry": [
+        {
+          "class": "container hero",
+          "id": "",
+          "y": 80,
+          "height": 780
+        },
+        {
+          "class": "ref-ecosystem",
+          "id": "ecosystem",
+          "y": 860,
+          "height": 1883
+        },
+        {
+          "class": "ref-why",
+          "id": "",
+          "y": 2743,
+          "height": 673
+        },
+        {
+          "class": "ref-student",
+          "id": "",
+          "y": 3416,
+          "height": 599
+        },
+        {
+          "class": "ref-products",
+          "id": "",
+          "y": 4015,
+          "height": 814
+        },
+        {
+          "class": "ref-community",
+          "id": "",
+          "y": 4829,
+          "height": 610
+        },
+        {
+          "class": "ref-stories",
+          "id": "stories",
+          "y": 5439,
+          "height": 1090
+        },
+        {
+          "class": "ref-quote",
+          "id": "",
+          "y": 6529,
+          "height": 120
+        },
+        {
+          "class": "darkpanel ref-work",
+          "id": "",
+          "y": 6649,
+          "height": 500
+        }
+      ]
+    },
+    {
+      "route": "store",
+      "width": 1440,
+      "height": 3195,
+      "geometry": [
+        {
+          "class": "store-banner",
+          "id": "",
+          "y": 106,
+          "height": 691
+        },
+        {
+          "class": "ref-catalog",
+          "id": "",
+          "y": 797,
+          "height": 1974
+        }
+      ]
+    },
+    {
+      "route": "summit",
+      "width": 1440,
+      "height": 3620,
+      "geometry": [
+        {
+          "class": "summit-hero",
+          "id": "",
+          "y": 80,
+          "height": 530
+        },
+        {
+          "class": "ref-sponsors",
+          "id": "",
+          "y": 610,
+          "height": 100
+        },
+        {
+          "class": "ref-schedule-intro",
+          "id": "",
+          "y": 710,
+          "height": 466
+        },
+        {
+          "class": "",
+          "id": "schedule",
+          "y": 1176,
+          "height": 1109
+        },
+        {
+          "class": "ref-daily",
+          "id": "",
+          "y": 2285,
+          "height": 439
+        },
+        {
+          "class": "ref-attend",
+          "id": "",
+          "y": 2724,
+          "height": 472
+        }
+      ]
+    },
+    {
+      "route": "home",
+      "width": 768,
+      "height": 10415,
+      "geometry": [
+        {
+          "class": "container hero",
+          "id": "",
+          "y": 76,
+          "height": 1036
+        },
+        {
+          "class": "ref-ecosystem",
+          "id": "ecosystem",
+          "y": 1112,
+          "height": 2183
+        },
+        {
+          "class": "ref-why",
+          "id": "",
+          "y": 3295,
+          "height": 968
+        },
+        {
+          "class": "ref-student",
+          "id": "",
+          "y": 4264,
+          "height": 945
+        },
+        {
+          "class": "ref-products",
+          "id": "",
+          "y": 5209,
+          "height": 834
+        },
+        {
+          "class": "ref-community",
+          "id": "",
+          "y": 6043,
+          "height": 870
+        },
+        {
+          "class": "ref-stories",
+          "id": "stories",
+          "y": 6913,
+          "height": 1603
+        },
+        {
+          "class": "ref-quote",
+          "id": "",
+          "y": 8516,
+          "height": 132
+        },
+        {
+          "class": "darkpanel ref-work",
+          "id": "",
+          "y": 8648,
+          "height": 826
+        }
+      ]
+    },
+    {
+      "route": "store",
+      "width": 768,
+      "height": 4407,
+      "geometry": [
+        {
+          "class": "store-banner",
+          "id": "",
+          "y": 86,
+          "height": 957
+        },
+        {
+          "class": "ref-catalog",
+          "id": "",
+          "y": 1043,
+          "height": 2771
+        }
+      ]
+    },
+    {
+      "route": "summit",
+      "width": 768,
+      "height": 4623,
+      "geometry": [
+        {
+          "class": "summit-hero",
+          "id": "",
+          "y": 76,
+          "height": 829
+        },
+        {
+          "class": "ref-sponsors",
+          "id": "",
+          "y": 905,
+          "height": 90
+        },
+        {
+          "class": "ref-schedule-intro",
+          "id": "",
+          "y": 995,
+          "height": 637
+        },
+        {
+          "class": "",
+          "id": "schedule",
+          "y": 1632,
+          "height": 817
+        },
+        {
+          "class": "ref-daily",
+          "id": "",
+          "y": 2449,
+          "height": 865
+        },
+        {
+          "class": "ref-attend",
+          "id": "",
+          "y": 3314,
+          "height": 716
+        }
+      ]
+    },
+    {
+      "route": "home",
+      "width": 375,
+      "height": 11927,
+      "geometry": [
+        {
+          "class": "container hero",
+          "id": "",
+          "y": 76,
+          "height": 838
+        },
+        {
+          "class": "ref-ecosystem",
+          "id": "ecosystem",
+          "y": 914,
+          "height": 2915
+        },
+        {
+          "class": "ref-why",
+          "id": "",
+          "y": 3829,
+          "height": 1092
+        },
+        {
+          "class": "ref-student",
+          "id": "",
+          "y": 4921,
+          "height": 798
+        },
+        {
+          "class": "ref-products",
+          "id": "",
+          "y": 5718,
+          "height": 890
+        },
+        {
+          "class": "ref-community",
+          "id": "",
+          "y": 6608,
+          "height": 871
+        },
+        {
+          "class": "ref-stories",
+          "id": "stories",
+          "y": 7478,
+          "height": 2072
+        },
+        {
+          "class": "ref-quote",
+          "id": "",
+          "y": 9550,
+          "height": 213
+        },
+        {
+          "class": "darkpanel ref-work",
+          "id": "",
+          "y": 9763,
+          "height": 793
+        }
+      ]
+    },
+    {
+      "route": "store",
+      "width": 375,
+      "height": 7115,
+      "geometry": [
+        {
+          "class": "store-banner",
+          "id": "",
+          "y": 86,
+          "height": 739
+        },
+        {
+          "class": "ref-catalog",
+          "id": "",
+          "y": 825,
+          "height": 5398
+        }
+      ]
+    },
+    {
+      "route": "summit",
+      "width": 375,
+      "height": 5032,
+      "geometry": [
+        {
+          "class": "summit-hero",
+          "id": "",
+          "y": 76,
+          "height": 670
+        },
+        {
+          "class": "ref-sponsors",
+          "id": "",
+          "y": 746,
+          "height": 90
+        },
+        {
+          "class": "ref-schedule-intro",
+          "id": "",
+          "y": 836,
+          "height": 705
+        },
+        {
+          "class": "",
+          "id": "schedule",
+          "y": 1541,
+          "height": 832
+        },
+        {
+          "class": "ref-daily",
+          "id": "",
+          "y": 2373,
+          "height": 957
+        },
+        {
+          "class": "ref-attend",
+          "id": "",
+          "y": 3330,
+          "height": 810
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

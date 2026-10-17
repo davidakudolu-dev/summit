@@ -1,3 +1,8 @@
+# Current UI reconstruction validation — 17 October 2026
+
+See [UI_RECONSTRUCTION.md](docs/UI_RECONSTRUCTION.md) for the latest visual and functional results.
+The earlier report below records the previous Stage 3 implementation, before the new UI reference.
+
 # Stage 3 validation report — 14 October 2026
 
 **72 local checks passed: 44 backend tests, 13 public-browser checks, 8 admin-browser checks,

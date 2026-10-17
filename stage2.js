@@ -78,7 +78,7 @@
   function mapProduct(p) { return { ...p, name: p.title, price: p.price_minor / 100, image: p.image_url, category: p.category || 'Resources' }; }
   window.prodCard = function(p) {
     const image = safeImage(p.image_url);
-    return `<article class="product"><div class="product-image">${image ? `<img loading="lazy" src="${image}" alt="${escape(p.title)}">` : `<div class="fake-cover">1751<br>${escape(p.title)}</div>`}<span class="product-meta">${escape(p.category || 'Resources')}</span></div><div class="product-body"><h3>${escape(p.title)}</h3><p class="product-desc">${escape(p.description)}</p><div class="price">${cash(p.price_minor)}</div><div class="product-actions">${button('Details', 'product', { id: p.id }, 'btn ghost sm')}${button('Add +', 'add', { id: p.id })}</div></div></article>`;
+    return `<article class="product"><div class="product-image">${image ? `<img loading="lazy" src="${image}" alt="${escape(p.title)}">` : `<div class="fake-cover">1751<br>${escape(p.title)}</div>`}<span class="product-meta">${escape(p.category || 'Resources')}</span></div><div class="product-body"><h3>${escape(p.title)}</h3><p class="product-desc">${escape(p.description)}</p><div class="price">${cash(p.price_minor)}</div><div class="product-actions">${button('View Product →', 'product', { id: p.id }, 'btn ghost sm')}${button('Add +', 'add', { id: p.id })}</div></div></article>`;
   };
   window.renderStore = async function (append = false) {
     if (!append) catalogOffset = 0;
@@ -104,8 +104,10 @@
       const list = (await homeContent()).products; $('#homeproducts').innerHTML = list.length ? list.map(prodCard).join('') : empty('Resources will appear here when published.');
       if (list.length) {
         $('#featured-title').textContent = list[0].title;
-        const b = $('#featured-buy'); b.textContent = `Buy now — ${cash(list[0].price_minor)} ↗`; if (b._stage1Handlers?.click) b.removeEventListener('click', b._stage1Handlers.click); b.dataset.action = 'add'; b.dataset.id = list[0].id;
+        $('#featured-price').textContent = cash(list[0].price_minor);
+        const b = $('#featured-buy'); b.textContent = 'Buy Now'; if (b._stage1Handlers?.click) b.removeEventListener('click', b._stage1Handlers.click); b.dataset.action = 'add'; b.dataset.id = list[0].id;
         if (safeImage(list[0].image_url)) $('.store-banner img').src = list[0].image_url;
+        $('.store-banner .copy p').textContent = list[0].description;
       }
     } catch (e) { $('#homeproducts').innerHTML = empty(errorMessage(e), 'home-products'); }
   }
@@ -201,13 +203,14 @@
   }
   const eventDay = e => new Intl.DateTimeFormat('en-CA', { timeZone: selectedSummit?.timezone || e.timezone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(e.starts_at));
   window.renderEvents = function () {
-    if (!selectedSummit) { $('#daytabs').innerHTML = ''; $('#events').innerHTML = empty('No published programme is available yet.'); return; }
+    if (!selectedSummit) { window.renderReferenceDaily?.([],[],0); $('#daytabs').innerHTML = ''; $('#events').innerHTML = empty('No published programme is available yet.'); return; }
     $('#daytabs').innerHTML = days.map((d, i) => button(`Day ${i + 1} · ${dates(d + 'T12:00:00Z', 'UTC', false)}`, 'day', { index: i }, `tab ${i === activeDay ? 'selected' : ''}`)).join('');
     $('#listbtn').classList.toggle('selected', view === 'list'); $('#calbtn').classList.toggle('selected', view === 'calendar');
     $('#listbtn').setAttribute('aria-pressed', String(view === 'list')); $('#calbtn').setAttribute('aria-pressed', String(view === 'calendar'));
     const list = events.filter(e => eventDay(e) === days[activeDay]);
     $('#events').removeAttribute('aria-labelledby');
-    if (view === 'calendar') { $('#events').innerHTML = `<div class="calendar">${days.map((d, i) => `<div class="cal-day"><b>${dates(d + 'T12:00:00Z', 'UTC', false)}</b><p>${events.filter(e => eventDay(e) === d).length} sessions</p>${button('View day', 'day', { index: i })}</div>`).join('')}</div>`; return; }
+    window.renderReferenceDaily?.(days,list,activeDay);
+    if (view === 'calendar' && window.renderReferenceMonth) {window.renderReferenceMonth(days,events,eventDay);return;}
     $('#events').innerHTML = `<p class="muted">${escape(selectedSummit.title)} · ${escape(selectedSummit.timezone)}</p>` + (list.length ? `<div class="event-list">${list.map(e => `<article class="event"><div class="datebox"><b>${dates(e.starts_at, e.timezone, false)}</b></div><div><span class="eyebrow">${escape(e.category)}</span><h3>${escape(e.title)}</h3><p>${dates(e.starts_at, e.timezone)} – ${dates(e.ends_at, e.timezone)} · ${escape(e.location || 'Venue details on confirmation')}</p></div>${button('View details ↗', 'event', { id: e.id }, 'btn outline sm')}</article>`).join('')}</div>` : empty('No published sessions for this day.'));
   };
   window.selectDay = i => { if (i >= 0 && i < days.length) { activeDay = i; view = 'list'; renderEvents(); } };

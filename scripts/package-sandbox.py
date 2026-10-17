@@ -7,11 +7,11 @@ output.mkdir(parents=True,exist_ok=True)
 npm='npm.cmd' if os.name=='nt' else 'npm'
 for task in ['build','build:functions','build:static','validate:deployment']:
  subprocess.run([npm,'run',task],cwd=root,check=True)
-source_files=['README.md','QA_REPORT.md','package.json','package-lock.json','wrangler.toml','.env.example','backup.env.example','.gitignore','.node-version','index.html','bootstrap.js','stage1.css','stage1.js','stage2.css','stage2.js','stage3.css','stage3.js']
+source_files=['README.md','QA_REPORT.md','package.json','package-lock.json','wrangler.toml','.env.example','backup.env.example','.gitignore','.node-version','index.html','reference.css','reference.js','bootstrap.js','stage1.css','stage1.js','stage2.css','stage2.js','stage3.css','stage3.js']
 source_dirs=['admin','assets','backend','shared','functions','supabase','scripts','demo','jobs','docs','tests','.github','dist']
 files=[root/p for p in source_files]
 for directory in source_dirs:
- files.extend(p for p in (root/directory).rglob('*') if p.is_file() and '__pycache__' not in p.parts)
+ files.extend(p for p in (root/directory).rglob('*') if p.is_file() and not any(part in {'.local','.wrangler','.git','node_modules','__pycache__'} for part in p.relative_to(root).parts))
 # Only explicit reviewed paths are packaged. Never include .local, .git, node_modules or runtime secrets.
 secrets=[value.encode() for name,value in os.environ.items() if name in ['GH_TOKEN','GITHUB_TOKEN','CLOUDFLARE_API_TOKEN','SUPABASE_SERVICE_ROLE_KEY','PAYSTACK_SECRET_KEY','RESEND_API_KEY','APP_SECRET','JOB_SECRET'] and len(value)>=16]
 for p in files:

@@ -1,4 +1,4 @@
-# Dashboard assets versus Wrangler source — 14 October 2026
+# Dashboard assets versus Wrangler source — updated 17 October 2026
 
 The reported `1/140 files could not be uploaded — wrangler.toml` matches the 140-entry full source
 archive. The source/configuration package was sent to the dashboard's public-assets upload path.
@@ -11,9 +11,9 @@ supported _headers/_redirects rules and contains no backend routing markers.
 ## Clean public upload
 
 1751_DASHBOARD_UPLOAD_STATIC_ONLY.zip is generated from an explicit public-asset allowlist.
-It contains 32 files, with index.html at ZIP root. No source/configuration templates, manifests,
+It contains 39 files, with index.html at ZIP root. No source/configuration templates, manifests,
 server code, functions, _worker.js, _routes.json, hidden environment files or private values enter
-this artifact. Credentials remain deployment bindings. Its original UI is visibly labelled as a
+this artifact. Credentials remain deployment bindings. Its reconstructed reference UI is visibly labelled as a
 static preview, with data-backed actions explicitly unavailable and zero API network requests.
 
 ## Complete source deployment

@@ -2,17 +2,18 @@
 import {cp,mkdir,readFile,rm,writeFile} from 'node:fs/promises';
 const target='static-preview';
 await rm(target,{recursive:true,force:true});await mkdir(target,{recursive:true});
-for(const file of ['index.html','bootstrap.js','stage1.css','stage1.js','stage2.css','stage2.js','stage3.css','stage3.js','admin','shared','assets'])await cp(file,`${target}/${file}`,{recursive:true});
-const banner='<div class="platform-note" role="status">Static preview only · Sign-in, administration, purchases, registrations and submissions are unavailable.</div>';
+for(const file of ['index.html','reference.css','reference.js','bootstrap.js','stage1.css','stage1.js','stage2.css','stage2.js','stage3.css','stage3.js','admin','shared','assets'])await cp(file,`${target}/${file}`,{recursive:true});
+await cp('demo/reference-fixtures.js',`${target}/reference-fixtures.js`);
+const banner='<div class="platform-note" role="status">Static preview only · Sample content and prices from the reference. Sign-in, administration, purchases, registrations and submissions are unavailable.</div>';
 for(const file of ['index.html','admin/index.html']){
  let html=await readFile(`${target}/${file}`,'utf8');
- html=html.replace('<head>','<head><meta name="robots" content="noindex,nofollow"><script src="/static-preview.js"></script>');
+ html=html.replace('<head>','<head><meta name="robots" content="noindex,nofollow"><script src="/reference-fixtures.js"></script><script src="/static-preview.js"></script>');
  html=html.replace('</header>','</header>'+banner);
  await writeFile(`${target}/${file}`,html);
 }
 await writeFile(`${target}/static-preview.js`,`/* Explicitly disable data-backed actions in this static-only artifact. */
 const previewFetch=window.fetch.bind(window);
-window.fetch=(input,init)=>{const url=new URL(typeof input==='string'?input:input.url,location.href);if(url.origin===location.origin&&url.pathname.startsWith('/api/'))return Promise.resolve(new Response(JSON.stringify({error:'static_preview_only'}),{status:503,headers:{'Content-Type':'application/json'}}));return previewFetch(input,init);};\n`);
+window.fetch=(input,init)=>{const url=new URL(typeof input==='string'?input:input.url,location.href);if(url.origin===location.origin&&url.pathname.startsWith('/api/')){const sample=(!init?.method||init.method==='GET')?window.referencePreviewResponse?.(url):undefined;return Promise.resolve(new Response(JSON.stringify(sample===undefined?{error:'static_preview_only'}:sample),{status:sample===undefined?503:200,headers:{'Content-Type':'application/json'}}));}return previewFetch(input,init);};\n`);
 let adapter=await readFile(`${target}/stage2.js`,'utf8');
 adapter=adapter.replace('const errors = {','const errors = { static_preview_only: "Static preview: sign-in, purchases, registrations and submissions are unavailable.",');
 await writeFile(`${target}/stage2.js`,adapter);

@@ -1,6 +1,6 @@
 
 const products=[],days=[],schedule=[];
-let activeDay=0,view='list',category='All',cart={};
+let activeDay=0,view='calendar',category='All',cart={};
 const money=n=>'₦'+Number(n).toLocaleString('en-NG');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function toast(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600)}

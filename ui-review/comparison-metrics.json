@@ -1,0 +1,38 @@
+[
+  {
+    "page": "home",
+    "reference_dimensions": [
+      1440,
+      7814
+    ],
+    "render_dimensions": [
+      1440,
+      7814
+    ],
+    "mean_absolute_rgb_difference_out_of_255": 8.64
+  },
+  {
+    "page": "store",
+    "reference_dimensions": [
+      1440,
+      3195
+    ],
+    "render_dimensions": [
+      1440,
+      3195
+    ],
+    "mean_absolute_rgb_difference_out_of_255": 8.55
+  },
+  {
+    "page": "summit",
+    "reference_dimensions": [
+      1440,
+      3620
+    ],
+    "render_dimensions": [
+      1440,
+      3620
+    ],
+    "mean_absolute_rgb_difference_out_of_255": 6.88
+  }
+]

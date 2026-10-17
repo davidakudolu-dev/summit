@@ -43,7 +43,7 @@ try {
   const device=await browser.newContext();const devicePage=await device.newPage();devicePage.on('pageerror',e=>errors.push(e.message));await devicePage.goto(f.env.APP_ORIGIN+'/#account');await devicePage.locator('[data-form=auth-login] input[name=email]').fill('test@example.test');await devicePage.locator('[data-form=auth-login] input[name=password]').fill('long-test-password');await devicePage.locator('[data-form=auth-login] button[type=submit]').click();await devicePage.locator('[data-form=profile]').waitFor();assert.equal(await devicePage.locator('[data-form=profile] input[name=display_name]').inputValue(),'Browser Member');await device.close();
  });
  await check('five-day schedule, calendar and confirmed registration dashboard',async()=>{
-  await page.evaluate(()=>navigate('summit'));await waitText('#events','TEST ONLY Free Session');assert.equal(await page.locator('#daytabs button').count(),5);
+  await page.evaluate(()=>navigate('summit'));await page.locator('#listbtn').click();await waitText('#events','TEST ONLY Free Session');assert.equal(await page.locator('#daytabs button').count(),5);
   await page.locator('#calbtn').click();assert.equal(await page.locator('#events .cal-day').count(),5);await clickAction('day','#events');
   await page.locator('#events [data-action=event]').first().click();await clickAction('register-event','#modalcontent');await page.locator('#modalcontent [data-form=registration] button[type=submit]').click();await waitText('#modalcontent','Registration confirmed');await clickAction('account','#modalcontent');await waitText('#account-content','TEST ONLY Free Session');
  });

@@ -3,7 +3,7 @@ import { contentSecurityPolicy } from './security.mjs';
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist', { recursive: true });
 // Never copy the checkout wholesale: credentials, tests and backend source are not static assets.
-for (const f of ['index.html', 'bootstrap.js', 'stage1.css', 'stage1.js', 'stage2.css', 'stage2.js','stage3.js','stage3.css','admin','shared', 'assets']) await cp(f, `dist/${f}`, { recursive: true });
+for (const f of ['index.html', 'reference.css','reference.js','bootstrap.js', 'stage1.css', 'stage1.js', 'stage2.css', 'stage2.js','stage3.js','stage3.css','admin','shared', 'assets']) await cp(f, `dist/${f}`, { recursive: true });
 // Disable Pages' default SPA fallback for unknown/private-looking file paths.
 // Clean application routes continue through the original source Functions.
 await writeFile('dist/404.html','<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Page unavailable — 1751</title><link rel="stylesheet" href="/admin/admin.css"></head><body><main><h1>Page unavailable</h1><p>This address is unavailable. Return to the website to continue.</p><a href="/">Return to 1751</a></main></body></html>');

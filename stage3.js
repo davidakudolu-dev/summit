@@ -23,7 +23,7 @@
  window.loadProductPage=async productId=>{try{const p=(await api('product?id='+encodeURIComponent(productId)))[0];if(!p)throw new Error('Product unavailable');$('#article-content').innerHTML=`<article class="article-layout"><a href="/store">← Store</a><h1>${escape(p.title)}</h1>${safe(p.image_url)?`<img class="article-cover" src="${escape(imageUrl(p.image_url))}" alt="${escape(p.title)}">`:''}<p class="article-body">${escape(p.description)}</p><p class="price">${cash(p.price_minor)}</p><button class="btn" data-action="add" data-id="${p.id}">Add to cart</button></article>`;document.title=p.title+' — 1751 Store';}catch(e){failure(e);}};
  window.loadEventPage=async eventId=>{try{const e=(await api('event?id='+encodeURIComponent(eventId)))[0];if(!e)throw new Error('Event unavailable');$('#article-content').innerHTML=`<article class="article-layout"><a href="/summit">← Summit</a><h1>${escape(e.title)}</h1><p class="article-body">${escape(e.description)}</p><p>${escape(e.starts_at)} – ${escape(e.ends_at)} · ${escape(e.timezone)}</p><p>${e.price_minor?cash(e.price_minor):'Free'}</p><button class="btn" data-action="register-event" data-id="${e.id}">Register</button></article>`;document.title=e.title+' — 1751 Summit';}catch(e){failure(e);}};
  function apply(settings){
-  if(settings.site_name){$('.brand').lastChild.textContent=settings.site_name;}
+  if(settings.site_name){$('.brand-name').textContent=settings.site_name;}
   if(settings.hero_title)$('.hero h1').textContent=settings.hero_title;
   if(settings.hero_intro)$('.hero .lead').textContent=settings.hero_intro;
   if(settings.summit_intro)$('.summit-hero .muted').textContent=settings.summit_intro;

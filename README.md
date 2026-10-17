@@ -1,4 +1,7 @@
-# 1751 — Stage 3 release
+# 1751 — Reference UI reconstruction
+
+Reconstructed the supplied homepage, store and summit UI while preserving the existing application.
+[Visual review, screenshots and implementation details](docs/UI_RECONSTRUCTION.md).
 
 ## Which download to use
 
@@ -7,7 +10,7 @@
 Upload this ZIP as-is to a separate Pages Direct Upload preview project. It has index.html at ZIP
 root and only public HTML/CSS/JS/images/fonts plus supported _headers/_redirects/robots files.
 It has no wrangler.toml, _routes.json, _worker.js, functions, server source or secret/config files.
-This is a visual preview: authentication, admin operations, payments, saved data and email do not run.
+This is a labelled visual preview with reference sample content and prices: authentication, admin operations, payments, saved data and email do not run. It contains 39 public files.
 Do not upload it over a working full application.
 
 **Need the full interactive application? Download
@@ -20,7 +23,7 @@ The earlier 140-file full-source ZIP is superseded by this explicitly named pack
 The Stage 1 design and Stage 2 transactional platform now include protected administration,
 MFA and role permissions, content/catalog/event/support management, audit history, secure uploads,
 verified payment operations, public server rendering/SEO, health monitoring and encrypted recovery
-scripts. Original artwork and Stage 1 stylesheet are preserved. Paystack remains test-only.
+scripts. Original artwork and the Stage 1 stylesheet remain available; reference.css supplies the reconstructed UI. Paystack remains test-only.
 
 Local implementation is available; public launch remains blocked by owner access/configuration
 and legal/retention decisions. No public deployment or live payment activation occurred.

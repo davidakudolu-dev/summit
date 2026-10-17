@@ -10,7 +10,7 @@ Do not upload the full source ZIP through the dashboard's Workers Static Assets 
 1. Download **1751_DASHBOARD_UPLOAD_STATIC_ONLY.zip** from this repository's download link.
 2. Cloudflare → Workers & Pages → Pages → Direct Upload: choose a separate preview project.
 3. Select that ZIP itself and upload it. Do not select the full-source ZIP, the GitHub repository
-   archive or the entire extracted project folder. The correct upload has 32 files, not 140.
+   archive or the entire extracted project folder. The correct upload has 39 files, not 140.
 4. Deploy and open the URL Cloudflare reports. Verify the visible "Static preview only" label.
    Navigation/layout/carousel can be reviewed; account/admin/payment/data/email actions are disabled.
 

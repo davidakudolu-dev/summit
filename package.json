@@ -22,7 +22,8 @@
     "build:static": "node scripts/build-static.mjs",
     "validate:deployment": "node scripts/validate-deployment.mjs",
     "test:cloudflare": "node tests/cloudflare-runtime.mjs",
-    "test:static": "node tests/static-preview.mjs"
+    "test:static": "node tests/static-preview.mjs",
+    "test:reference": "node tests/reference-visual.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

@@ -21,7 +21,7 @@ http.createServer(async (req, res) => {
     const env={...process.env,APP_ORIGIN:process.env.APP_ORIGIN||host};
     if(env.SUPABASE_URL&&(routeFromPath(url.pathname)||url.pathname.startsWith('/legal/')||['/robots.txt','/sitemap.xml'].includes(url.pathname))){const rendered=await renderPublic(new Request(url),env,{template:await readFile(new URL('../index.html',import.meta.url),'utf8')});if(rendered){res.statusCode=rendered.status;for(const [k,v]of rendered.headers)res.setHeader(k,v);return res.end(await rendered.text());}}
     const path = routeFromPath(url.pathname)?'index.html':['/admin','/admin/'].includes(url.pathname)?'admin/index.html':url.pathname.slice(1);
-    if (!['index.html', 'bootstrap.js', 'stage1.js', 'stage1.css', 'stage2.js', 'stage2.css','stage3.js','stage3.css','admin/index.html','admin/admin.js','admin/admin.css','shared/admin-model.js','assets/favicon.svg'].includes(path) && !/^assets\/img\d+\.webp$/.test(path) && !/^assets\/fonts\/(dm-sans|manrope)-latin\.woff2$/.test(path)) { res.statusCode = 404; return res.end('Not found'); }
+    if (!['index.html', 'reference.css','reference.js','bootstrap.js', 'stage1.js', 'stage1.css', 'stage2.js', 'stage2.css','stage3.js','stage3.css','admin/index.html','admin/admin.js','admin/admin.css','shared/admin-model.js','assets/favicon.svg','assets/icons.svg'].includes(path) && !/^assets\/img\d+\.webp$/.test(path) && !/^assets\/fonts\/(dm-sans|manrope)-latin\.woff2$/.test(path)) { res.statusCode = 404; return res.end('Not found'); }
     res.setHeader('Content-Type', types[path.slice(path.lastIndexOf('.'))] || 'application/octet-stream');
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Content-Security-Policy',policy);
